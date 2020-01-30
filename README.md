@@ -11,6 +11,13 @@ It functions identically to `Array`, except that all the
 functions that modify arrays in-place have been replaced with functions that
 never modify the original array, always returning a copy.
 
+## Installation
+
+```
+npm install array-immutable --save
+```
+
+
 ## Usage
 
 
