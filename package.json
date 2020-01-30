@@ -6,6 +6,10 @@
   "directories": {
     "test": "test"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/terrymorse58/array-immutable"
+  },
   "scripts": {
     "test": "node test/test.mjs > test/test_out.txt"
   },
