@@ -1,0 +1,19 @@
+{
+  "name": "array-immutable",
+  "version": "1.0.0",
+  "description": "Immutable JavaScript Arrays",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/test.mjs > test/test_out.txt"
+  },
+  "keywords": [
+    "Array",
+    "immutable",
+    "JavaScript"
+  ],
+  "author": "Terry Morse",
+  "license": "MIT"
+}
