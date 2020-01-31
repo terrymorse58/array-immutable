@@ -86,9 +86,9 @@ All of the `Array` functions are included in `ArrayI`, with all the same
 input parameters. The only additional method is the utility function
 `ArrayI.arrayI()`, which creates a new`ArrayI` array from an existing Array.
 
-The major differences is that `ArrayI` methods return arrays of type
-`ArrayI`, instead of type `Array`, and the methods return deep copies of
-the input arrays.
+The major difference between `Array` and `ArrayI` is that `ArrayI` methods
+return arrays of type`ArrayI` instead of type `Array`, and the `ArrayI`
+methods return *deep copies* of the input arrays.
 
 ### Functions that Return New Arrays
 

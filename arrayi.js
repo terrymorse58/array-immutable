@@ -27,6 +27,8 @@ class ArrayI extends Array {
    * @param {Object} [thisArg]
    * @return {ArrayI}
    */
+
+
   static from(arrayLike, mapFn, thisArg) {
     return this.arrayI(deepCopy(Array.from(arrayLike, mapFn, thisArg)));
   }
@@ -34,6 +36,8 @@ class ArrayI extends Array {
    * @param {...*} elements
    * @return {ArrayI}
    */
+
+
   static of(...elements) {
     return this.arrayI(deepCopy(Array.of(...arguments)));
   }
@@ -41,6 +45,8 @@ class ArrayI extends Array {
    * @param {...*} values
    * @return {ArrayI}
    */
+
+
   concat(...values) {
     return this.constructor.arrayI(deepCopy(Array.concat(...arguments)));
   }
@@ -50,6 +56,8 @@ class ArrayI extends Array {
    * @param {Number} [end]
    * @return {ArrayI}
    */
+
+
   copyWithin(target, start, end) {
     const from = deepCopy([...this]);
     return this.constructor.arrayI(from.copyWithin(...arguments));
@@ -71,6 +79,8 @@ class ArrayI extends Array {
    * @param {object} [thisArg]
    * @return {ArrayI}
    */
+
+
   filter(callback, thisArg) {
     const arr = deepCopy([...this]);
     return this.constructor.arrayI(arr.filter(...arguments));
@@ -79,6 +89,8 @@ class ArrayI extends Array {
    * @param {number} [depth]
    * @return {ArrayI}
    */
+
+
   flat(depth) {
     const arr = deepCopy([...this]);
     return this.constructor.arrayI(arr.flat(depth));
@@ -87,6 +99,8 @@ class ArrayI extends Array {
    * @param {function} callback
    * @return {ArrayI}
    */
+
+
   flatMap(callback) {
     const arr = deepCopy([...this]);
     const flatM = arr.flatMap(...arguments);
@@ -97,6 +111,8 @@ class ArrayI extends Array {
    * @param {object} [thisArg]
    * @return {ArrayI}
    */
+
+
   map(callback, thisArg) {
     const arr = deepCopy([...this]);
     return this.constructor.arrayI(arr.map(...arguments));
@@ -111,6 +127,8 @@ class ArrayI extends Array {
    * @param {...*} elements
    * @return {ArrayI}
    */
+
+
   push(...elements) {
     const arr = deepCopy([...this]);
     arr.push(...arguments);
@@ -132,6 +150,8 @@ class ArrayI extends Array {
    * @param {number} [end]
    * @return {ArrayI}
    */
+
+
   slice(begin, end) {
     const arr = deepCopy([...this]);
     return this.constructor.arrayI(arr.slice(...arguments));
@@ -140,6 +160,8 @@ class ArrayI extends Array {
    * @param {function} [compareFn]
    * @return {ArrayI}
    */
+
+
   sort(compareFn) {
     const arr = deepCopy([...this]);
     return this.constructor.arrayI(arr.sort(compareFn));
@@ -150,6 +172,8 @@ class ArrayI extends Array {
    * @param {...*} [itemsToAdd]
    * @return {ArrayI}
    */
+
+
   splice(start, deleteCount, ...itemsToAdd) {
     const arr = deepCopy([...this]);
     arr.splice(...arguments);
@@ -159,6 +183,8 @@ class ArrayI extends Array {
    * @param {...*} elements
    * @return {ArrayI}
    */
+
+
   unshift(...elements) {
     const arr = deepCopy([...this]);
     arr.unshift(...arguments);
@@ -166,76 +192,86 @@ class ArrayI extends Array {
   }
 
 }
+/**
+ * perform a deep copy of the source
+ * @param {Date|ArrayI|[]|{}|number|string|boolean} source
+ * @return {*}
+ */
 
 
 exports.default = ArrayI;
 
-function deepCopy(target) {
+function deepCopy(source) {
   let copy;
 
-  if (!target) {
-    return target;
+  if (!source) {
+    return source;
   } // no need to deep copy primitives or functions
 
 
-  if (isPrimitive(target) || isFunction(target)) {
-    return target;
-  } // duplicate and return Date objects
+  if (isPrimitive(source) || isFunction(source)) {
+    return source;
+  } // simply duplicate and return Date objects
 
 
-  if (isDate(target)) {
-    return new Date(target.getTime());
-  }
+  if (isDate(source)) {
+    return new Date(source.getTime());
+  } // create empty copy of the correct type
 
-  if (isArrayI(target)) {
+
+  if (isArrayI(source)) {
     copy = new ArrayI();
-  } else if (isArray(target)) {
+  } else if (isArray(source)) {
     copy = [];
-  } else if (isObject(target)) {
+  } else if (isObject(source)) {
     copy = {};
   }
 
-  traverse(target, copy);
+  traverse(source, copy);
   return copy;
+  /**
+   * recursively traverse source object to create duplicate
+   * @param {ArrayI|Array|Object} srcObject
+   * @param {ArrayI|Array|Object} duplicate
+   */
 
-  function traverse(target, copy) {
-    for (const key in target) {
-      if (!target.hasOwnProperty(key)) {
+  function traverse(srcObject, duplicate) {
+    for (const key in srcObject) {
+      if (!srcObject.hasOwnProperty(key)) {
         continue;
       }
 
-      const element = target[key];
-      let value, last;
+      const element = srcObject[key];
 
       if (isPrimitive(element) || isFunction(element)) {
-        value = element;
-        add(copy, key, value);
+        addToObject(duplicate, key, element);
       } else if (isDate(element)) {
-        value = new Date(element.getTime());
-        add(copy, key, value);
+        addToObject(duplicate, key, new Date(element.getTime()));
       } else if (isArrayI(element)) {
-        value = new ArrayI();
-        last = add(copy, key, value);
-        traverse(element, last);
+        traverse(element, addToObject(duplicate, key, new ArrayI()));
       } else if (isArray(element)) {
-        value = [];
-        last = add(copy, key, value);
-        traverse(element, last);
+        traverse(element, addToObject(duplicate, key, []));
       } else if (isObject(element)) {
-        value = {};
-        last = add(copy, key, value);
-        traverse(element, last);
+        traverse(element, addToObject(duplicate, key, {}));
       }
     }
   }
+  /**
+   * add element to object
+   * @param {Array|ArrayI|Object} obj
+   * @param {number|string} key
+   * @param {*} value
+   * @return {*}
+   */
 
-  function add(copy, key, value) {
-    if (isArrayI(copy) || isArray(copy)) {
-      Array.prototype.push.call(copy, value);
-      return copy[copy.length - 1];
-    } else if (isObject(copy)) {
-      copy[key] = value;
-      return copy[key];
+
+  function addToObject(obj, key, value) {
+    if (isArrayI(obj) || isArray(obj)) {
+      Array.prototype.push.call(obj, value);
+      return obj[obj.length - 1];
+    } else if (isObject(obj)) {
+      obj[key] = value;
+      return obj[key];
     }
   }
 

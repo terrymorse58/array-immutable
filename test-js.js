@@ -1,9 +1,11 @@
 const ArrayI = require('./arrayi.js').default;
 
-console.log('ArrayI:',ArrayI);
 
 console.log('\nArrayI tests...');
 console.error('ArrayI test begin...');
+
+console.log('ArrayI:',ArrayI,
+  '\n    typeof ArrayI:', typeof ArrayI);
 
 console.log('\nmethods:');
 

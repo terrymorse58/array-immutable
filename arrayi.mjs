@@ -172,71 +172,80 @@ export default class ArrayI extends Array {
   }
 }
 
-// perform a deep copy of the target array or object
-function deepCopy (target) {
+/**
+ * perform a deep copy of the source
+ * @param {Date|ArrayI|[]|{}|number|string|boolean} source
+ * @return {*}
+ */
+function deepCopy (source) {
 
   let copy;
 
-  if (!target) {
-    return target;
+  if (!source) {
+    return source;
   }
 
   // no need to deep copy primitives or functions
-  if (isPrimitive(target) || isFunction(target)) {
-    return target;
+  if (isPrimitive(source) || isFunction(source)) {
+    return source;
   }
 
-  // duplicate and return Date objects
-  if (isDate(target)) {
-    return new Date(target.getTime());
+  // simply duplicate and return Date objects
+  if (isDate(source)) {
+    return new Date(source.getTime());
   }
 
-  if (isArrayI(target)) {
+  // create empty copy of the correct type
+  if (isArrayI(source)) {
     copy = new ArrayI();
-  } else if (isArray(target)) {
+  } else if (isArray(source)) {
     copy = [];
-  } else if (isObject(target)) {
+  } else if (isObject(source)) {
     copy = {};
   }
-  traverse(target, copy);
+
+  traverse(source, copy);
   return copy;
 
-  function traverse (target, copy) {
-    for (const key in target) {
-      if (!target.hasOwnProperty(key)) {
+  /**
+   * recursively traverse source object to create duplicate
+   * @param {ArrayI|Array|Object} srcObject
+   * @param {ArrayI|Array|Object} duplicate
+   */
+  function traverse (srcObject, duplicate) {
+    for (const key in srcObject) {
+      if (!srcObject.hasOwnProperty(key)) {
         continue;
       }
-      const element = target[key];
-      let value, last;
+      const element = srcObject[key];
       if (isPrimitive(element) || isFunction(element)) {
-        value = element;
-        add(copy, key, value);
+        addToObject(duplicate, key, element);
       } else if (isDate(element)) {
-        value = new Date(element.getTime());
-        add(copy, key, value);
+        addToObject(duplicate, key, new Date(element.getTime()));
       } else if (isArrayI(element)) {
-        value = new ArrayI();
-        last = add(copy, key, value);
-        traverse(element, last);
+        traverse(element, addToObject(duplicate, key, new ArrayI()));
       } else if (isArray(element)) {
-        value = [];
-        last = add(copy, key, value);
-        traverse(element, last);
+        traverse(element, addToObject(duplicate, key, []));
       } else if (isObject(element)) {
-        value = {};
-        last = add(copy, key, value);
-        traverse(element, last);
+        traverse(element, addToObject(duplicate, key, {}));
       }
     }
   }
 
-  function add (copy, key, value) {
-    if (isArrayI(copy) || isArray(copy)) {
-      Array.prototype.push.call(copy, value);
-      return copy[copy.length - 1];
-    } else if (isObject(copy)) {
-      copy[key] = value;
-      return copy[key];
+  /**
+   * add element to object
+   * @param {Array|ArrayI|Object} obj
+   * @param {number|string} key
+   * @param {*} value
+   * @return {*}
+   */
+  function addToObject (obj, key, value) {
+    if (isArrayI(obj) || isArray(obj)) {
+      Array.prototype.push.call(obj, value);
+      return obj[obj.length - 1];
+    } else if (isObject(obj)) {
+      obj[key] = value;
+      return obj[key];
     }
   }
 

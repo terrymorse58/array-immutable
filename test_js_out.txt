@@ -1,6 +1,7 @@
-ArrayI: [Function: ArrayI]
 
 ArrayI tests...
+ArrayI: [Function: ArrayI] 
+    typeof ArrayI: function
 
 methods:
 
