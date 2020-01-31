@@ -9,12 +9,12 @@ class for immutable arrays.
 **array-immutable** creates a class named `ArrayI` ('I' stands for "immutable").
 It functions identically to `Array`, except that all the
 functions that modify arrays in-place have been replaced with functions that
-never modify the original array, always returning a copy.
+never modify the original array, always returning a *deep copy* of the original.
 
 ## Installation
 
 ```
-npm install array-immutable --save
+$ npm install array-immutable --save
 ```
 
 
@@ -23,13 +23,21 @@ npm install array-immutable --save
 
 
 ````js
-// from a module
-import ArrayI from "./js/arrayi.mjs"
+// as a node.js module
+import ArrayI from "./arrayi.mjs";
+
+// or
+const ArrayI = require('./arrayi.js').default;
 ````
 
 ````html
-<!-- from an HTML file -->
-<script type="module" src="./js/arrayi.mjs"></script>
+<!-- from an HTML file in a browser -->
+<script type="module" src="arrayi.mjs"></script>
+
+<!-- or an alternate method -->
+<script type="module">
+  import ArrayI from "./arrayi.mjs";
+</script>
 ````
 
 ## Creating Arrays
@@ -37,36 +45,50 @@ import ArrayI from "./js/arrayi.mjs"
 Create a new array with  `new ArrayI()`
 ````js
 // ArrayI:
-const myArray = new ArrayI('a', 'b', 'c');// ArrayI ['a', 'b', 'c']
+const myArray = new ArrayI('a', 'b', 'c');
+// ArrayI ['a', 'b', 'c']
 
 // vs. Array:
-const myArray = new Array('a', 'b', 'c'); // [ 'a', 'b', 'c' ]
+const myArray = new Array('a', 'b', 'c');
+// [ 'a', 'b', 'c' ]
 ````
 Create a new array with `ArrayI.from()`
 ````js
 // ArrayI:
-const myArray = ArrayI.from("hello"); // ArrayI [ 'h', 'e', 'l', 'l', 'o' ]
+const myArray = ArrayI.from("hello");
+// ArrayI [ 'h', 'e', 'l', 'l', 'o' ]
 
 // vs. Array:
-const myArray = Array.from("hello"); // [ 'h', 'e', 'l', 'l', 'o' ]
+const myArray = Array.from("hello");
+// [ 'h', 'e', 'l', 'l', 'o' ]
 ````
 Create a new array with `ArrayI.of()`
 ````js
 // ArrayI:
-const myArray = ArrayI.from(['cows', 'pigs', 'goats']); // ArrayI ['cows', 'pigs', 'goats']
+const myArray = ArrayI.from(['cows', 'pigs', 'goats']);
+// ArrayI ['cows', 'pigs', 'goats']
 
 // vs. Array:
-const myArray = ArrayI.from(['cows', 'pigs', 'goats']); // ['cows', 'pigs', 'goats']
+const myArray = ArrayI.from(['cows', 'pigs', 'goats']);
+// ['cows', 'pigs', 'goats']
+````
+Create a new `ArrayI` array from an existing `Array` with `ArrayI.arrayI()`
+````js
+const oldArray = [1,2,3,'a'];
+const newArray = ArrayI.arrayI(oldArray);
+// ArrayI [1, 2, 3, 'a']
 ````
 
 
 ## Functions
 
-All of the `Array` functions are supported in `ArrayI`, with all the same
-input parameters.
+All of the `Array` functions are included in `ArrayI`, with all the same
+input parameters. The only additional method is the utility function
+`ArrayI.arrayI()`, which creates a new`ArrayI` array from an existing Array.
 
-The one major difference is that `ArrayI` functions return arrays of type
-`ArrayI`, instead of type `Array`.
+The major differences is that `ArrayI` methods return arrays of type
+`ArrayI`, instead of type `Array`, and the methods return deep copies of
+the input arrays.
 
 ### Functions that Return New Arrays
 

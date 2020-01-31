@@ -1,6 +1,6 @@
 {
   "name": "array-immutable",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Immutable JavaScript Arrays",
   "main": "index.js",
   "directories": {
@@ -11,7 +11,9 @@
     "url": "https://github.com/terrymorse58/array-immutable"
   },
   "scripts": {
-    "test": "node test/test.mjs > test/test_out.txt"
+    "testmjs": "node test-mjs.mjs > test_mjs_out.txt",
+    "testjs": "node test-js.js > test_js_out.txt",
+    "build": "babel arrayi.mjs -o arrayi.js"
   },
   "keywords": [
     "Array",
@@ -19,5 +21,12 @@
     "JavaScript"
   ],
   "author": "Terry Morse",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.8.3",
+    "babel-cli": "^6.26.0"
+  }
 }
