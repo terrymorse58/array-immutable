@@ -21,20 +21,17 @@ $ npm install array-immutable --save
 ## Usage
 
 
-
+Node.js:
 ````js
 // as a node.js module
 import ArrayI from "./arrayi.mjs";
-
-// or
-const ArrayI = require('./arrayi.js').default;
 ````
-
+HTML:
 ````html
 <!-- from an HTML file in a browser -->
 <script type="module" src="arrayi.mjs"></script>
 
-<!-- or an alternate method -->
+<!-- an alternate method -->
 <script type="module">
   import ArrayI from "./arrayi.mjs";
 </script>
