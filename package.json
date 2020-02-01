@@ -11,8 +11,8 @@
     "url": "https://github.com/terrymorse58/array-immutable"
   },
   "scripts": {
-    "testmjs": "node test-mjs.mjs > test_mjs_out.txt",
-    "testjs": "node test-js.js > test_js_out.txt",
+    "testai": "node test/test-arrayi.mjs > test/test-arrayi-result.txt",
+    "testdc": "node test/test-deepcopy.mjs > test/test-deepcopy-result.txt",
     "build": "bash build.sh"
   },
   "keywords": [

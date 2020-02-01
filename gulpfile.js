@@ -2,29 +2,30 @@ const gulp = require("gulp");
 const minify = require("gulp-minify");
 const rename = require("gulp-rename");
 
-const JSFILE = 'arrayi.js';
-const MJSFILE = 'arrayi.mjs';
+const ARRAYI_FILE = 'arrayi.mjs';
+const DEEP_COPY_FILE = 'deepcopy.mjs';
+const DEST_DIR = './dist/min';
 
-gulp.task('minifyjs', () => {
-  console.log(`Minifying ${JSFILE}...`);
-  return gulp.src(JSFILE, { allowEmpty: true })
+gulp.task('minifyarrayi', () => {
+  console.log(`Minifying ${ARRAYI_FILE}...`);
+  return gulp.src(ARRAYI_FILE, { allowEmpty: true })
     .pipe(minify({noSource: true}))
     .pipe(rename(path => {
       path.basename = path.basename.replace(/-min/,'.min');
       return path;
     }))
-    .pipe(gulp.dest('./min'))
+    .pipe(gulp.dest(DEST_DIR))
 });
 
-gulp.task('minifymjs', () => {
-  console.log(`Minifying ${MJSFILE}...`);
-  return gulp.src(MJSFILE, { allowEmpty: true })
+gulp.task('minifydeepcopy', () => {
+  console.log(`Minifying ${DEEP_COPY_FILE}...`);
+  return gulp.src(DEEP_COPY_FILE, { allowEmpty: true })
     .pipe(minify({noSource: true}))
     .pipe(rename(path => {
       path.basename = path.basename.replace(/-min/,'.min');
       return path;
     }))
-    .pipe(gulp.dest('./min'))
+    .pipe(gulp.dest(DEST_DIR))
 });
 
-gulp.task('default', gulp.series(['minifyjs','minifymjs']));
+gulp.task('default', gulp.series(['minifyarrayi','minifydeepcopy']));

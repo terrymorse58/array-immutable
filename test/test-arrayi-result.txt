@@ -1,23 +1,35 @@
 
 ArrayI tests...
+arrayi-test-suite.mjs run...
 
 methods:
 
 arrayI:
+
   const arrOld = ['f', 'r', 'e', 'd'];
   const arrI = ArrayI.arrayI(arrOld);
   // expected output: ArrayI ['f', 'r', 'e', 'd']
     arrOld: [ 'f', 'r', 'e', 'd' ] 
     arrI: ArrayI [ 'f', 'r', 'e', 'd' ]
 
-arrayI:
+arrayI2:
+
   const arrO = [];
-  const arrI = ArrayI.arrayI(arrOld);
+  const arrIm = ArrayI.arrayI(arrO);
   // expected output: ArrayI []
     arrO: [] 
     arrIm: ArrayI []
 
+arrayI3:
+
+  const arr1 = [1,2,'a',{foo: 'foo', bar: 'bar'}];
+  const arrIz = ArrayI.arrayI(arr1);
+  // expected output: ArrayI []
+    arr1: [ 1, 2, 'a', { foo: 'foo', bar: 'bar' } ] 
+    arrIz: ArrayI [ 1, 2, 'a', { foo: 'foo', bar: 'bar' } ]
+
 from:
+
   const hello = "hello";
   const from = ArrayI.from(hello);
   // expected output: ArrayI [ 'h', 'e', 'l', 'l', 'o' ]
@@ -25,6 +37,7 @@ from:
     from: ArrayI [ 'h', 'e', 'l', 'l', 'o' ]
 
 from2:
+
   const ar123 = [1,2,3];
   const from2 = ArrayI.from(ar123, x => x + x);
   // expected output: ArrayI [2, 4, 6]
@@ -32,6 +45,7 @@ from2:
     from2: ArrayI [ 2, 4, 6 ]
 
 of:
+
   const args = [1, 2, 3];
   const of = ArrayI.of(...args);
   // expected output: ArrayI [ 1, 2, 3 ]
@@ -41,6 +55,7 @@ of:
 prototypes:
 
 copyWithin:
+
   const arrA = new ArrayI('a', 'b', 'c', 'd', 'e');
   const arrCW = arrA.copyWithin(0, 3, 4);
   // expected output: ArrayI [ 'd', 'b', 'c', 'd', 'e' ]
@@ -48,6 +63,7 @@ copyWithin:
     arrCW: ArrayI [ 'd', 'b', 'c', 'd', 'e' ]
 
 fill:
+
   const arrF = ArrayI.arrayI([1, 2, 3, 4]);
   const arrFill = arrF.fill(0,2,4);
   // expected output: ArrayI [ 1, 2, 0, 0 ]
@@ -55,6 +71,7 @@ fill:
     arrFill: ArrayI [ 1, 2, 0, 0 ]
 
 filter:
+
   const words = new ArrayI('spray', 'limit', 'elite', 'exuberant',
         'destruction', 'present');
   const arrFilter = words.filter(word => word.length > 6);
@@ -70,6 +87,7 @@ filter:
     after: ArrayI [ 'exuberant', 'destruction', 'present' ]
 
 flat:
+
   const arrNotFlat = ArrayI.from([1, 2, [3, [4]]]);
   const arrFlat = arrNotFlat.flat(Infinity);
   // expected output: ArrayI [ 1, 2, 3, 4 ]
@@ -77,6 +95,7 @@ flat:
     arrFlat: ArrayI [ 1, 2, 3, 4 ]
 
 flatMap:
+
   const arr2 = ArrayI.arrayI(1, 2, 3, 4);
   const arrFlatMap = arr2.flatMap(x => [[x * 2]]);
   // expected output: ArrayI [ [ 2 ], [ 4 ], [ 6 ], [ 8 ] ]
@@ -84,6 +103,7 @@ flatMap:
     arrFlatMap: ArrayI [ [ 2 ], [ 4 ], [ 6 ], [ 8 ] ]
 
 map:
+
   const numbers = new ArrayI(1, 4, 9);
   const roots = numbers.map( (num) => Math.sqrt(num));
   // expected output: ArrayI [ 1, 2, 3 ]
@@ -91,6 +111,7 @@ map:
     roots: ArrayI [ 1, 2, 3 ]
 
 pop:
+
   const plants = new ArrayI('broccoli', 'cauliflower', 'cabbage',
         'kale', 'tomato');
   const pop = plants.pop();
@@ -99,6 +120,7 @@ pop:
     pop: ArrayI [ 'broccoli', 'cauliflower', 'cabbage', 'kale' ]
 
 push:
+
   const critters = new ArrayI("pigs", "goats", "sheep", "cows");
   const push = critters.push('chickens', 'cats', 'dogs');
   // expected output: ArrayI [
@@ -116,6 +138,7 @@ push:
 ]
 
 reverse:
+
   const array1 = new ArrayI('one', 'two', 'three');
   const reversed = array1.reverse();
   // expected output: ArrayI [ 'three', 'two', 'one' ]
@@ -123,6 +146,7 @@ reverse:
     reversed: ArrayI [ 'three', 'two', 'one' ]
 
 shift:
+
   const arr123 = new ArrayI(1,2,3);
   const shift = arr123.shift();
   // expected output: ArrayI [ 2, 3 ]
@@ -130,6 +154,7 @@ shift:
     shift: ArrayI [ 2, 3 ]
 
 slice:
+
   const animals = new ArrayI('ant', 'bison', 'camel', 'duck', 'elephant');
   const slice = animals.slice(2);
   // expected output: ArrayI [ 'camel', 'duck', 'elephant' ]
@@ -137,6 +162,7 @@ slice:
     slice: ArrayI [ 'camel', 'duck', 'elephant' ]
 
 sort:
+
   const unsorted = new ArrayI('March', 'Jan', 'Feb', 'Dec');
   const sorted = unsorted.sort();
   // expected output: ArrayI [ 'Dec', 'Feb', 'Jan', 'March' ]
@@ -144,6 +170,7 @@ sort:
     sorted: ArrayI [ 'Dec', 'Feb', 'Jan', 'March' ]
 
 splice:
+
   const months = new ArrayI('Jan', 'March', 'April', 'June');
   const splice = months.splice(1, 0, 'Feb');
   // expected output: ArrayI [ 'Jan', 'Feb', 'March', 'April', 'June' ]
@@ -151,8 +178,35 @@ splice:
     after: ArrayI [ 'Jan', 'Feb', 'March', 'April', 'June' ]
 
 unshift:
+
   const array2 = new ArrayI(1,2,3);
   const unshift = array2.unshift(4, 5);
   // expected output: ArrayI [ 4, 5, 1, 2, 3 ]
     before: ArrayI [ 1, 2, 3 ] 
     after: ArrayI [ 4, 5, 1, 2, 3 ]
+
+Map:
+
+  let myMap = new Map();
+  myMap.set(0, 'zero');
+  myMap.set(1, function foo () {console.log('i am foo')});
+  let mapArr = [1,2,myMap,42];
+  let mapI = ArrayI.arrayI(mapArr);
+    mapArr: [ 1, 2, Map(2) { 0 => 'zero', 1 => [Function: foo] }, 42 ] 
+    mapI: ArrayI [ 1, 2, Map(2) { 0 => 'zero', 1 => [Function: foo] }, 42 ] 
+ // vs:   ArrayI [ 1, 2, Map(2) { 0 => 'zero', 1 => [Function: foo] }, 42 ]
+
+Set:
+
+  let mySet = new Set();
+  mySet.add(1);
+  mySet.add(5);
+  mySet.add(5);
+  mySet.add('some text');
+  mySet.add({a: 1, b: 2})
+  let mySetArr = [1,2,'a',mySet];
+  let setArrI = ArrayI.arrayI(mySetArr);
+    mySetArr: [ 1, 2, 'a', Set(4) { 1, 5, 'some text', { a: 1, b: 2 } } ] 
+    setArrI:  ArrayI [ 1, 2, 'a', Set(4) { 1, 5, 'some text', { a: 1, b: 2 } } ] 
+ // vs:       ArrayI [ 1, 2, 'a', Set { 1, 5, 'some text', { a: 1, b: 2 } } ]
+setArrI[3] Set(4) { 1, 5, 'some text', { a: 1, b: 2 } } size: 4
