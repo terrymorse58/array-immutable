@@ -1,15 +1,32 @@
-import ArrayI from '../arrayi.mjs';
+// test of ArrayI
+const ArrayI = require('../arrayi.js');
 
-export function run () {
+console.log('\nArrayI tests...');
 
-  console.log('arrayi-test-suite.mjs run...');
+const COPY_DEEP = true;
 
-    testSuite('../arrayi.mjs');
+runTest();
+
+console.error('ArrayI test complete.\n');
+
+
+function runTest () {
+
+  const starttime = (new Date()).getTime();
+
+  testSuite(COPY_DEEP);
+
+  const endtime = (new Date()).getTime();
+  console.log(`\nElapsed time with deepCopy = ` +
+    `${ArrayI.deepCopy()}: ${endtime-starttime} millseconds.`);
 
 }
 
-function testSuite (sourceFile) {
-  console.error(`begin test of "${sourceFile}" ...`);
+function testSuite (copyDeep = true) {
+  console.error(`begin test ...`);
+
+  ArrayI.deepCopy(copyDeep);
+  console.log('\nDeep copying is: ', ArrayI.deepCopy(), '.');
 
   console.log('\nmethods:');
 
@@ -17,67 +34,80 @@ function testSuite (sourceFile) {
   console.log('\narrayI:');
   const arrOld = ['f', 'r', 'e', 'd'];
   const arrI = ArrayI.arrayI(arrOld);
+  arrOld[0] = arrOld[0].toUpperCase();
   console.log(
     '\n  const arrOld = [\'f\', \'r\', \'e\', \'d\'];' +
     '\n  const arrI = ArrayI.arrayI(arrOld);' +
-    '\n  // expected output: ArrayI [\'f\', \'r\', \'e\', \'d\']' +
-    '\n    arrOld:', arrOld,
-    '\n    arrI:', arrI);
+    '\n  arrOld[0] = arrOld[0].toUpperCase();' +
+    '\n    arrOld:     ', arrOld,
+    '\n    arrI:', arrI,
+    '\n  // vs:  ArrayI [ \'f\', \'r\', \'e\', \'d\' ]');
 
 // arrayI2
   console.log('\narrayI2:');
-  const arrO = [];
-  const arrIm = ArrayI.arrayI(arrO);
+  const arr0 = [];
+  const arrIm = ArrayI.arrayI(arr0);
+  arr0.push("new stuff");
   console.log(
-    '\n  const arrO = [];' +
-    '\n  const arrIm = ArrayI.arrayI(arrO);' +
-    '\n  // expected output: ArrayI []' +
-    '\n    arrO:', arrO,
-    '\n    arrIm:', arrIm);
+    '\n  const arr0 = [];' +
+    '\n  const arrIm = ArrayI.arrayI(arr0);' +
+    '\n  arr.push("new stuff");' +
+    '\n    arr0: ', arr0,
+    '\n    arrIm:', arrIm,
+    '\n  // vs:   ArrayI []');
 
 // arrayI3
   console.log('\narrayI3:');
   const arr1 = [1, 2, 'a', {foo: 'foo', bar: 'bar'}];
   const arrIz = ArrayI.arrayI(arr1);
+  arr1[3].bar = "BAR-BAR";
   console.log(
     '\n  const arr1 = [1,2,\'a\',{foo: \'foo\', bar: \'bar\'}];' +
     '\n  const arrIz = ArrayI.arrayI(arr1);' +
-    '\n  // expected output: ArrayI []' +
-    '\n    arr1:', arr1,
-    '\n    arrIz:', arrIz);
+    '\n  arr1[3].bar = "BAR-BAR";' +
+    '\n    arr1:        ', arr1,
+    '\n    arrIz:', arrIz,
+    '\n  // vs:   ArrayI [ 1, 2, \'a\', { foo: \'foo\', bar: \'bar\' } ]');
 
 // from
   console.log('\nfrom:');
-  const hello = 'hello';
+  let hello = 'hello';
   const from = ArrayI.from(hello);
+  hello = hello.toUpperCase();
   console.log(
-    '\n  const hello = "hello";' +
+    '\n  let hello = "hello";' +
     '\n  const from = ArrayI.from(hello);' +
-    '\n  // expected output: ArrayI [ \'h\', \'e\', \'l\', \'l\', \'o\' ]' +
+    '\n  hello = hello.toUpperCase();' +
     '\n    hello:', '"' + hello + '"',
-    '\n    from:', from);
+    '\n    from: ', from,
+    '\n  // vs:   ArrayI [ \'h\', \'e\', \'l\', \'l\', \'o\' ]');
 
 // from2
   console.log('\nfrom2:');
-  const ar123 = [1, 2, 3];
+  let ar123 = [1, 2, 3];
   const from2 = ArrayI.from(ar123, x => x + x);
+  ar123[2] = 33333333;
   console.log(
-    '\n  const ar123 = [1,2,3];' +
+    '\n  let ar123 = [1,2,3];' +
     '\n  const from2 = ArrayI.from(ar123, x => x + x);' +
-    '\n  // expected output: ArrayI [2, 4, 6]' +
-    '\n    ar123:', '"' + hello + '"',
-    '\n    from2:', from2);
+    '\n  ar123[2] = 33333333;' +
+    '\n    ar123:', ar123,
+    '\n    from2:', from2,
+    '\n  // vs:   ArrayI [ 2, 4, 6 ]'
+  );
 
 // of
   console.log('\nof:');
   const args = [1, 2, 3];
   const of = ArrayI.of(...args);
+  args[3] = 333333344400;
   console.log(
     '\n  const args = [1, 2, 3];' +
     '\n  const of = ArrayI.of(...args);' +
-    '\n  // expected output: ArrayI [ 1, 2, 3 ]' +
+    '\n  args[3] = 333333344400;' +
     '\n    args:', args,
-    '\n    of:', of);
+    '\n    of:  ', of,
+    '\n  //vs:   ArrayI [ 1, 2, 3 ]');
 
   console.log('\nprototypes:');
 
@@ -88,9 +118,9 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const arrA = new ArrayI(\'a\', \'b\', \'c\', \'d\', \'e\');' +
     '\n  const arrCW = arrA.copyWithin(0, 3, 4);' +
-    '\n  // expected output: ArrayI [ \'d\', \'b\', \'c\', \'d\', \'e\' ]' +
-    '\n    arrA:', arrA,
-    '\n    arrCW:', arrCW);
+    '\n    arrA: ', arrA,
+    '\n    arrCW:', arrCW,
+    '\n  // vs:   ArrayI [ \'d\', \'b\', \'c\', \'d\', \'e\' ]');
 
 // fill
   console.log('\nfill:');
@@ -99,9 +129,9 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const arrF = ArrayI.arrayI([1, 2, 3, 4]);' +
     '\n  const arrFill = arrF.fill(0,2,4);' +
-    '\n  // expected output: ArrayI [ 1, 2, 0, 0 ]' +
-    '\n    arrF:', arrF,
-    '\n    arrFill:', arrFill);
+    '\n    arrF:   ', arrF,
+    '\n    arrFill:', arrFill,
+    '\n  // vs:     ArrayI [ 1, 2, 0, 0 ]');
 
 // filter
   console.log('\nfilter:');
@@ -112,10 +142,9 @@ function testSuite (sourceFile) {
     '\n  const words = new ArrayI(\'spray\', \'limit\', \'elite\', \'exuberant\',' +
     '\n        \'destruction\', \'present\');' +
     '\n  const arrFilter = words.filter(word => word.length > 6);' +
-    '\n  // expected output: ArrayI [ \'exuberant\', \'destruction\',' +
-    ' \'present\' ]' +
     '\n    before:', words,
-    '\n    after:', arrFilter);
+    '\n    after:', arrFilter,
+    '\n  // vs:   ArrayI [ \'exuberant\', \'destruction\', \'present\' ]');
 
 // flat
   console.log('\nflat:');
@@ -124,9 +153,9 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const arrNotFlat = ArrayI.from([1, 2, [3, [4]]]);' +
     '\n  const arrFlat = arrNotFlat.flat(Infinity);' +
-    '\n  // expected output: ArrayI [ 1, 2, 3, 4 ]' +
     '\n    arrNoFlat:', arrNotFlat,
-    '\n    arrFlat:', arrFlat);
+    '\n    arrFlat:  ', arrFlat,
+    '\n  // vs:       ArrayI [ 1, 2, 3, 4 ]');
 
 // flatMap
   console.log('\nflatMap:');
@@ -135,9 +164,9 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const arr2 = ArrayI.arrayI(1, 2, 3, 4);' +
     '\n  const arrFlatMap = arr2.flatMap(x => [[x * 2]]);' +
-    '\n  // expected output: ArrayI [ [ 2 ], [ 4 ], [ 6 ], [ 8 ] ]' +
-    '\n    arr2:', arr2,
-    '\n    arrFlatMap:', arrFlatMap);
+    '\n    arr2:      ', arr2,
+    '\n    arrFlatMap:', arrFlatMap,
+    '\n // vs:         ArrayI [ [ 2 ], [ 4 ], [ 6 ], [ 8 ] ]');
 
 // map
   console.log('\nmap:');
@@ -146,9 +175,9 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const numbers = new ArrayI(1, 4, 9);' +
     '\n  const roots = numbers.map( (num) => Math.sqrt(num));' +
-    '\n  // expected output: ArrayI [ 1, 2, 3 ]' +
     '\n    numbers:', numbers,
-    '\n    roots:', roots);
+    '\n    roots:  ', roots,
+    '\n  // vs:     ArrayI [ 1, 2, 3 ]');
 
 // pop
   console.log('\npop:');
@@ -159,9 +188,10 @@ function testSuite (sourceFile) {
     '\n  const plants = new ArrayI(\'broccoli\', \'cauliflower\', \'cabbage\',' +
     '\n        \'kale\', \'tomato\');' +
     '\n  const pop = plants.pop();' +
-    '\n  // expected output: ArrayI [ \'broccoli\', \'cauliflower\', \'cabbage\', \'kale\' ]' +
     '\n    plants:', plants,
-    '\n    pop:', pop);
+    '\n    pop:   ', pop,
+    '\n  // vs:    ArrayI [ \'broccoli\', \'cauliflower\', \'cabbage\',' +
+    ' \'kale\' ]');
 
 // push
   console.log('\npush:');
@@ -170,14 +200,14 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const critters = new ArrayI("pigs", "goats", "sheep", "cows");' +
     '\n  const push = critters.push(\'chickens\', \'cats\', \'dogs\');' +
-    '\n  // expected output: ArrayI [\n' +
-    '          \'pigs\',     \'goats\',\n' +
-    '          \'sheep\',    \'cows\',\n' +
-    '          \'chickens\', \'cats\',\n' +
-    '          \'dogs\'\n' +
-    '        ]' +
     '\n    critters:', critters,
-    '\n    push:', push);
+    '\n    push:', push,
+    '\n  // vs:  ArrayI [\n' +
+    '  \'pigs\',     \'goats\',\n' +
+    '  \'sheep\',    \'cows\',\n' +
+    '  \'chickens\', \'cats\',\n' +
+    '  \'dogs\'\n' +
+    ']');
 
 // reverse
   console.log('\nreverse:');
@@ -186,9 +216,9 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const array1 = new ArrayI(\'one\', \'two\', \'three\');' +
     '\n  const reversed = array1.reverse();' +
-    '\n  // expected output: ArrayI [ \'three\', \'two\', \'one\' ]' +
     '\n    array1:', array1,
-    '\n    reversed:', reversed);
+    '\n    reversed:', reversed,
+    '\n  // vs:      ArrayI [ \'three\', \'two\', \'one\' ]');
 
 // shift
   console.log('\nshift:');
@@ -197,9 +227,9 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const arr123 = new ArrayI(1,2,3);' +
     '\n  const shift = arr123.shift();' +
-    '\n  // expected output: ArrayI [ 2, 3 ]' +
     '\n    arr123:', arr123,
-    '\n    shift:', shift);
+    '\n    shift: ', shift,
+    '\n  // vs:    ArrayI [ 2, 3 ]');
 
 // slice
   console.log('\nslice:');
@@ -208,9 +238,9 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const animals = new ArrayI(\'ant\', \'bison\', \'camel\', \'duck\', \'elephant\');' +
     '\n  const slice = animals.slice(2);' +
-    '\n  // expected output: ArrayI [ \'camel\', \'duck\', \'elephant\' ]' +
     '\n    animals:', animals,
-    '\n    slice:', slice);
+    '\n    slice:  ', slice,
+    '\n  // vs:     ArrayI [ \'camel\', \'duck\', \'elephant\' ]');
 
 // sort
   console.log('\nsort:');
@@ -219,9 +249,9 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const unsorted = new ArrayI(\'March\', \'Jan\', \'Feb\', \'Dec\');' +
     '\n  const sorted = unsorted.sort();' +
-    '\n  // expected output: ArrayI [ \'Dec\', \'Feb\', \'Jan\', \'March\' ]' +
     '\n    unsorted:', unsorted,
-    '\n    sorted:', sorted);
+    '\n    sorted:  ', sorted,
+    '\n  // vs:      ArrayI [ \'Dec\', \'Feb\', \'Jan\', \'March\' ]');
 
 // splice
   console.log('\nsplice:');
@@ -230,9 +260,9 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const months = new ArrayI(\'Jan\', \'March\', \'April\', \'June\');' +
     '\n  const splice = months.splice(1, 0, \'Feb\');' +
-    '\n  // expected output: ArrayI [ \'Jan\', \'Feb\', \'March\', \'April\', \'June\' ]' +
-    '\n    before:', months,
-    '\n    after:', splice);
+    '\n    months:', months,
+    '\n    splice:', splice,
+    '\n  // vs:    ArrayI [ \'Jan\', \'Feb\', \'March\', \'April\', \'June\' ]');
 
 // unshift
   console.log('\nunshift:');
@@ -241,9 +271,9 @@ function testSuite (sourceFile) {
   console.log(
     '\n  const array2 = new ArrayI(1,2,3);' +
     '\n  const unshift = array2.unshift(4, 5);' +
-    '\n  // expected output: ArrayI [ 4, 5, 1, 2, 3 ]' +
-    '\n    before:', array2,
-    '\n    after:', unshift);
+    '\n    array2: ', array2,
+    '\n    unshift:', unshift,
+    '\n  // vs:     ArrayI [ 4, 5, 1, 2, 3 ]');
 
 // Map
   console.log('\nMap:');
@@ -258,7 +288,7 @@ function testSuite (sourceFile) {
     '\n  myMap.set(1, function foo () {console.log(\'i am foo\')});' +
     '\n  let mapArr = [1,2,myMap,42];' +
     '\n  let mapI = ArrayI.arrayI(mapArr);' +
-    '\n    mapArr:', mapArr,
+    '\n    mapArr:     ', mapArr,
     '\n    mapI:', mapI,
     '\n // vs:   ArrayI [ 1, 2, Map(2) { 0 => \'zero\', 1 =>' +
     ' [Function: foo] }, 42 ]');
@@ -268,11 +298,11 @@ function testSuite (sourceFile) {
   let mySet = new Set();
   mySet.add(1);
   mySet.add(5);
-  mySet.add(5);
   mySet.add('some text');
   mySet.add({a: 1, b: 2});
   let mySetArr = [1,2,'a',mySet];
   let setArrI = ArrayI.arrayI(mySetArr);
+  mySet.delete('some text');
   console.log(
     '\n  let mySet = new Set();' +
     '\n  mySet.add(1);' +
@@ -282,12 +312,14 @@ function testSuite (sourceFile) {
     '\n  mySet.add({a: 1, b: 2})' +
     '\n  let mySetArr = [1,2,\'a\',mySet];' +
     '\n  let setArrI = ArrayI.arrayI(mySetArr);' +
+    '\n  mySet.delete(\'some text\');' +
     '\n    mySetArr:', mySetArr,
     '\n    setArrI: ', setArrI,
-    '\n // vs:       ArrayI [ 1, 2, \'a\', Set { 1, 5, \'some text\', { a: 1,' +
-    ' b: 2 } } ]'
+    '\n // vs:       ArrayI [ 1, 2, \'a\', Set(4) { 1, 5, \'some text\' { a:' +
+    ' 1, b: 2 } } ]'
   );
 
-  console.log('setArrI[3]',setArrI[3],'size:',setArrI[3].size);
-
 }
+
+
+

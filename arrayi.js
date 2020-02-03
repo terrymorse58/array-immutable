@@ -1,9 +1,25 @@
 // ArrayI - an immutable array class based on Array
 
-import deepCopy from './deepcopy.mjs';
+const deepCopy = require('deep-copy-all').default;
 
-export default class ArrayI extends Array {
-  
+// use deep copy by default, change with Array.deepCopy(true|false)
+let useDeepCopy = true;
+const aiCopy = (arg) => deepCopy(arg, useDeepCopy);
+
+module.exports = class ArrayI extends Array {
+
+  /**
+   * get or modify deep copying preference
+   * @param {boolean} [copyDeep] leave blank to get current setting
+   * @return {boolean} - current setting
+   */
+  static deepCopy (copyDeep= undefined) {
+    if (typeof copyDeep === 'boolean') {
+      useDeepCopy = copyDeep;
+    }
+    return useDeepCopy;
+  }
+
   /**
    *  make ArrayI from copy of an Array
    * @param {Array} array
@@ -15,7 +31,7 @@ export default class ArrayI extends Array {
       throw Error('ArrayI.arrayI parameter is not an array');
     }
     const arrayI = new ArrayI();
-    Array.prototype.push.apply(arrayI, deepCopy(array));
+    Array.prototype.push.apply(arrayI, aiCopy(array));
     return arrayI;
   }
 
@@ -26,7 +42,7 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   static from (arrayLike, mapFn, thisArg) {
-    return this.arrayI(deepCopy(Array.from(arrayLike, mapFn, thisArg)));
+    return this.arrayI(aiCopy(Array.from(arrayLike, mapFn, thisArg)));
   }
 
   /**
@@ -34,7 +50,7 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   static of (...elements) {
-    return this.arrayI(deepCopy(Array.of(...arguments)));
+    return this.arrayI(aiCopy(Array.of(...arguments)));
   }
 
   /**
@@ -42,7 +58,7 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   concat (...values) {
-    return this.constructor.arrayI(deepCopy(Array.concat(...arguments)));
+    return this.constructor.arrayI(aiCopy(Array.concat(...arguments)));
   }
 
   /**
@@ -52,7 +68,7 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   copyWithin (target, start, end) {
-    const from = deepCopy([...this]);
+    const from = aiCopy([...this]);
     return this.constructor.arrayI(from.copyWithin(...arguments));
   }
 
@@ -63,7 +79,7 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   fill (value, start, end) {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     return this.constructor.arrayI(arr.fill(...arguments));
   }
 
@@ -73,7 +89,7 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   filter (callback, thisArg) {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     return this.constructor.arrayI(arr.filter(...arguments));
   }
 
@@ -82,7 +98,7 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   flat (depth) {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     return this.constructor.arrayI(arr.flat(depth));
   }
 
@@ -91,7 +107,7 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   flatMap (callback) {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     const flatM = arr.flatMap(...arguments);
     return this.constructor.arrayI(flatM);
   }
@@ -102,12 +118,12 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   map (callback, thisArg) {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     return this.constructor.arrayI(arr.map(...arguments));
   }
 
   pop () {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     arr.pop();
     return this.constructor.arrayI(arr);
   }
@@ -117,18 +133,18 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   push (...elements) {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     arr.push(...arguments);
     return this.constructor.arrayI(arr);
   }
 
   reverse () {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     return this.constructor.arrayI(arr.reverse());
   }
 
   shift () {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     arr.shift();
     return this.constructor.arrayI(arr);
   }
@@ -139,7 +155,7 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   slice (begin, end) {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     return this.constructor.arrayI(arr.slice(...arguments));
   }
 
@@ -148,7 +164,7 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   sort (compareFn) {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     return this.constructor.arrayI(arr.sort(compareFn));
   }
 
@@ -159,7 +175,7 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   splice (start, deleteCount, ...itemsToAdd) {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     arr.splice(...arguments);
     return this.constructor.arrayI(arr);
   }
@@ -169,11 +185,11 @@ export default class ArrayI extends Array {
    * @return {ArrayI}
    */
   unshift (...elements) {
-    const arr = deepCopy([...this]);
+    const arr = aiCopy([...this]);
     arr.unshift(...arguments);
     return this.constructor.arrayI(arr);
   }
-}
+};
 
 
 

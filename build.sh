@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 
-# build array-immutable for distribution
-#echo -n "Building arrayi.js file with babel..."
-#babel arrayi.mjs -o arrayi.js
-# --plugins=@babel/plugin-transform-modules-commonjs
-#echo "done."
+echo "Build array-immutable..."
+echo " "
+echo "Making browser version with browserify:"
+browserify arrayi.js --standalone ArrayI -o ./dist/ai-browser.js
+echo "Browserify complete."
 
-echo "Building minified source files:"
+echo " "
+echo "Making minified source files with gulp:"
 gulp --gulpfile gulpfile.js
-echo "Minify complete."
+echo "Gulp complete."
+echo "Build array-immutable complete."
 
-echo "Copying primary files to dist..."
-cp -v arrayi.mjs dist/arrayi.mjs
-cp -v deepcopy.mjs dist/deepcopy.mjs
-echo "Build complete."

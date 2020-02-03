@@ -1,8 +1,8 @@
 {
   "name": "array-immutable",
-  "version": "1.1.3",
-  "description": "Immutable JavaScript Arrays",
-  "main": "index.js",
+  "version": "1.1.4",
+  "description": "Immutable JavaScript Array",
+  "main": "arrayi.js",
   "directories": {
     "test": "test"
   },
@@ -11,8 +11,8 @@
     "url": "https://github.com/terrymorse58/array-immutable"
   },
   "scripts": {
-    "testai": "node test/test-arrayi.mjs > test/test-arrayi-result.txt",
-    "testdc": "node test/test-deepcopy.mjs > test/test-deepcopy-result.txt",
+    "test": "node test/test-arrayi.js > test/test-arrayi-out.txt",
+    "browser": "browserify arrayi.js --standalone ArrayIbundle > arrayi-browser.js",
     "build": "bash build.sh"
   },
   "keywords": [
@@ -22,11 +22,14 @@
   ],
   "author": "Terry Morse",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "deep-copy-all": "^1.0.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
     "@babel/core": "^7.8.3",
     "@babel/plugin-transform-modules-commonjs": "^7.8.3",
+    "browserify": "^16.5.0",
     "gulp": "^4.0.2",
     "gulp-minify": "^3.1.0",
     "gulp-rename": "^2.0.0"

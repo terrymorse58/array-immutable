@@ -2,11 +2,12 @@ const gulp = require("gulp");
 const minify = require("gulp-minify");
 const rename = require("gulp-rename");
 
-const ARRAYI_FILE = 'arrayi.mjs';
-const DEEP_COPY_FILE = 'deepcopy.mjs';
-const DEST_DIR = './dist/min';
+const DIST = './dist';
+const ARRAYI_FILE = './arrayi.js';
+const BROWSER_FILE = './' + DIST + '/' + 'ai-browser.js';
 
-gulp.task('minifyarrayi', () => {
+
+gulp.task('minifymodule', () => {
   console.log(`Minifying ${ARRAYI_FILE}...`);
   return gulp.src(ARRAYI_FILE, { allowEmpty: true })
     .pipe(minify({noSource: true}))
@@ -14,18 +15,18 @@ gulp.task('minifyarrayi', () => {
       path.basename = path.basename.replace(/-min/,'.min');
       return path;
     }))
-    .pipe(gulp.dest(DEST_DIR))
+    .pipe(gulp.dest(DIST));
 });
 
-gulp.task('minifydeepcopy', () => {
-  console.log(`Minifying ${DEEP_COPY_FILE}...`);
-  return gulp.src(DEEP_COPY_FILE, { allowEmpty: true })
+gulp.task('minifybrowser', () => {
+  console.log(`Minifying ${BROWSER_FILE}...`);
+  return gulp.src(BROWSER_FILE, { allowEmpty: true })
     .pipe(minify({noSource: true}))
     .pipe(rename(path => {
       path.basename = path.basename.replace(/-min/,'.min');
       return path;
     }))
-    .pipe(gulp.dest(DEST_DIR))
+    .pipe(gulp.dest(DIST));
 });
 
-gulp.task('default', gulp.series(['minifyarrayi','minifydeepcopy']));
+gulp.task('default', gulp.series(['minifymodule', 'minifybrowser']));

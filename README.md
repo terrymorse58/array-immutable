@@ -1,15 +1,29 @@
 # array-immutable
 
-An extension of the standard JavaScript
+Immutable JavaScript
 [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
-class for immutable arrays.
+class.
 
 ---
 
-**array-immutable** creates a class named `ArrayI` ('I' stands for "immutable").
-It functions identically to `Array`, except that all the
-functions that modify arrays in-place have been replaced with functions that
-never modify the original array, always returning a *deep copy* of the original.
+The existing JavaScript [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+class has a problem.
+
+Some of its built-in methods support modern concepts,
+others don’t. Some methods leave source arrays unchanged
+(immutable 👍), others change arrays in-place (mutable 👎).
+Some methods are pure functions (no side effects 👍), others are un-pure
+(has side effects 👎). In addition, some methods that should return an array don’t
+(can't do method chaining 👎).
+
+**array-immutable** addresses all of these `Array` problems by creating a clas
+named `ArrayI` (the letter'I' stands for "immutable"). It's identical to
+`Array`, except all the `Array`methods that modify arrays in-place have been
+replaced with pure functions that never modify the original array,
+returning instead a copy (deep or shallow) of the source array.
+
+ **array-immutable** methods behave in a consistent way, eliminating
+the need to remember if a certain method modifies in place or not.
 
 ## Installation
 
@@ -23,18 +37,16 @@ $ npm install array-immutable --save
 
 Node.js:
 ````js
-// as a node.js module
-import ArrayI from "./arrayi.mjs";
+// from a node.js module
+const ArrayI = require('array-immutable');
 ````
 HTML:
 ````html
-<!-- from an HTML file in a browser -->
-<script type="module" src="arrayi.mjs"></script>
+<!-- from a browser file -->
+<script src="dist/ai-browser.js"></script>
 
-<!-- an alternate method -->
-<script type="module">
-  import ArrayI from "./arrayi.mjs";
-</script>
+<!-- minified version -->
+<script src="dist/ai-browser.min.js"></script>
 ````
 
 ## Creating Arrays
@@ -49,7 +61,7 @@ const myArray = new ArrayI('a', 'b', 'c');
 const myArray = new Array('a', 'b', 'c');
 // [ 'a', 'b', 'c' ]
 ````
-Create a new array with `ArrayI.from()`
+Or with `ArrayI.from()`
 ````js
 // ArrayI:
 const myArray = ArrayI.from("hello");
@@ -59,7 +71,7 @@ const myArray = ArrayI.from("hello");
 const myArray = Array.from("hello");
 // [ 'h', 'e', 'l', 'l', 'o' ]
 ````
-Create a new array with `ArrayI.of()`
+Or with `ArrayI.of()`
 ````js
 // ArrayI:
 const myArray = ArrayI.from(['cows', 'pigs', 'goats']);
@@ -69,23 +81,49 @@ const myArray = ArrayI.from(['cows', 'pigs', 'goats']);
 const myArray = ArrayI.from(['cows', 'pigs', 'goats']);
 // ['cows', 'pigs', 'goats']
 ````
-Create a new `ArrayI` array from an existing `Array` with `ArrayI.arrayI()`
+Or from an existing `Array` with `ArrayI.arrayI()`
 ````js
 const oldArray = [1,2,3,'a'];
 const newArray = ArrayI.arrayI(oldArray);
 // ArrayI [1, 2, 3, 'a']
 ````
 
+## Configuration
 
-## Functions
+`ArrayI` defaults to deep copying of all arrays. Change this to shallow
+copying with `ArrayI.deepCopy(true|false)`. Calling `ArrayI.deepCopy()`
+with no arument returns the current deep copy setting (true or false).
 
-All of the `Array` functions are included in `ArrayI`, with all the same
-input parameters. The only additional method is the utility function
-`ArrayI.arrayI()`, which creates a new`ArrayI` array from an existing Array.
+All of the `Array` methods are included in `ArrayI`, with all the same
+input parameters. There are two new static functions.
 
-The major difference between `Array` and `ArrayI` is that `ArrayI` methods
-return arrays of type`ArrayI` instead of type `Array`, and the `ArrayI`
-methods return *deep copies* of the input arrays.
+## Static Functions
+
+### `ArrayI.arrayI()`
+
+The `arrayI()` static function creates a new `ArrayI` from an existing array.
+
+#### Syntax
+```js
+ArrayI.arrayI(array);
+```
+#### Parameters
+`array` - an array
+#### Return value
+A new `ArrayI` array.
+
+### `ArrayI.deepCopy()`
+
+Toggle between deep and shallow copy modes, or obtain current mode.
+
+#### Syntax
+```js
+ArrayI.deepCopy([copyDeep]);
+```
+#### Parameters
+`copyDeep` [optional] - true for deep copy, false for shallow, blank to obtain
+current mode
+
 
 ### Functions that Return New Arrays
 
@@ -111,11 +149,11 @@ The following functions return new `ArrayI` arrays:
 ### Functions That Return Differently than `Array`
 
 Some of the existing `Array` functions modify an array in-place, but return
- something other than the changed array.
+something other than the changed array.
  
- Since immutability require all functions that modify arrays to return
-  array *copies*, the following `ArrayI` methods return array copies instead of
-   what `Array` returns:
+Since immutability require all functions that modify arrays to return
+array *copies*, the following `ArrayI` methods return array copies instead of
+what `Array` returns:
   
 - [`.prototype.pop()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop) (`Array` returns removed element)
 - [`.prototype.push()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push) (`Array` returns new length of array)
@@ -129,7 +167,7 @@ Some of the existing `Array` functions modify an array in-place, but return
 
 ## Reference
 
-For complete details on all functions, see the `Array` documentation:
+For details on all functions, see the `Array` documentation:
 
 [MDN web docs - Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
