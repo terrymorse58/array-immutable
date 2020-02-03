@@ -13,17 +13,18 @@ Some of its built-in methods support modern concepts,
 others don’t. Some methods leave source arrays unchanged
 (immutable 👍), others change arrays in-place (mutable 👎).
 Some methods are pure functions (no side effects 👍), others are un-pure
-(has side effects 👎). In addition, some methods that should return an array don’t
+(has side effects 👎). In addition, some methods that should return an array
+don’t
 (can't do method chaining 👎).
 
 **array-immutable** addresses all of these `Array` problems by creating a clas
-named `ArrayI` (the letter'I' stands for "immutable"). It's identical to
-`Array`, except all the `Array`methods that modify arrays in-place have been
-replaced with pure functions that never modify the original array,
-returning instead a copy (deep or shallow) of the source array.
+named `ArrayI` (the letter 'I' stands for "immutable"). It's identical to
+`Array`, except all the un-pure `Array`methods that modify arrays in-place
+have been replaced with pure functions that don't modify the source array,
+returning instead a copy (deep or shallow).
 
  **array-immutable** methods behave in a consistent way, eliminating
-the need to remember if a certain method modifies in place or not.
+the need to remember if a given method modifies in place or not.
 
 ## Installation
 
@@ -91,10 +92,9 @@ const newArray = ArrayI.arrayI(oldArray);
 ## Configuration
 
 `ArrayI` defaults to deep copying of all arrays. Change this to shallow
-copying with `ArrayI.deepCopy(true|false)`. Calling `ArrayI.deepCopy()`
-with no arument returns the current deep copy setting (true or false).
+copying with `ArrayI.deepCopy()`.
 
-All of the `Array` methods are included in `ArrayI`, with all the same
+All of the `Array` methods are available in `ArrayI`, with all the same
 input parameters. There are two new static functions.
 
 ## Static Functions
@@ -112,17 +112,21 @@ ArrayI.arrayI(array);
 #### Return value
 A new `ArrayI` array.
 
+---
+
 ### `ArrayI.deepCopy()`
 
 Toggle between deep and shallow copy modes, or obtain current mode.
 
 #### Syntax
 ```js
-ArrayI.deepCopy([copyDeep]);
+ArrayI.deepCopy([deep]);
 ```
 #### Parameters
-`copyDeep` [optional] - true for deep copy, false for shallow, blank to obtain
-current mode
+`deep` *[optional]* - **true** for deep copy, **false** for shallow,
+**blank** to obtain current mode
+#### Return value
+The existing copy mode: true for deep copy, false for shallow
 
 
 ### Functions that Return New Arrays
