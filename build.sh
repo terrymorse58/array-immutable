@@ -3,7 +3,7 @@
 echo "Build array-immutable..."
 echo " "
 echo "Making browser version with browserify:"
-browserify arrayi.js --standalone ArrayI -o ./dist/ai-browser.js
+browserify index.js --standalone ArrayI -o ./arrayi.js
 echo "Browserify complete."
 
 echo " "

@@ -2,9 +2,9 @@ const gulp = require("gulp");
 const minify = require("gulp-minify");
 const rename = require("gulp-rename");
 
-const DIST = './dist';
-const ARRAYI_FILE = './arrayi.js';
-const BROWSER_FILE = './' + DIST + '/' + 'ai-browser.js';
+const DIST = './';
+const ARRAYI_FILE = 'index.js';
+const BROWSER_FILE = 'arrayi.js';
 
 
 gulp.task('minifymodule', () => {

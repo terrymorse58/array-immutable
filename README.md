@@ -29,7 +29,7 @@ the need to remember if a given method modifies in place or not.
 ## Installation
 
 ```
-$ npm install array-immutable --save
+$ npm install array-immutable
 ```
 
 
@@ -44,10 +44,10 @@ const ArrayI = require('array-immutable');
 HTML:
 ````html
 <!-- from a browser file -->
-<script src="dist/ai-browser.js"></script>
+<script src="arrayi.js"></script>
 
 <!-- minified version -->
-<script src="dist/ai-browser.min.js"></script>
+<script src="arrayi.min.js"></script>
 ````
 
 ## Creating Arrays
