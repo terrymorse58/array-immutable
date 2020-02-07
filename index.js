@@ -4,7 +4,9 @@ const deepCopy = require('./node_modules/deep-copy-all/index');
 
 // use deep copy by default, change with Array.deepCopy(true|false)
 const copyOptions = {
-  goDeep: true
+  goDeep: undefined,
+  includeNonEnumerable: undefined,
+  maxDepth: undefined
 }
 const aiCopy = (arg) => deepCopy(arg, copyOptions);
 

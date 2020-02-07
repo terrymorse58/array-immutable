@@ -1,8 +1,8 @@
 {
   "name": "array-immutable",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Immutable JavaScript Array",
-  "main": "index.js",
+  "main": "index.min.js",
   "directories": {
     "test": "test"
   },
@@ -23,7 +23,7 @@
   "author": "Terry Morse",
   "license": "MIT",
   "dependencies": {
-    "deep-copy-all": "^1.1.6"
+    "deep-copy-all": "^1.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
