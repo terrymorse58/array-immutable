@@ -1,7 +1,7 @@
 {
   "name": "array-immutable",
-  "version": "1.2.1",
-  "description": "Immutable JavaScript Array",
+  "version": "1.2.2",
+  "description": "Immutable JavaScript Array methods",
   "main": "index.min.js",
   "directories": {
     "test": "test"
